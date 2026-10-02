@@ -1,0 +1,754 @@
+<title>David Web Solution</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap">
+
+<style>
+  /* Layout: Single-page portfolio — sticky nav, full-width sections, card grid */
+  :root {
+    --bg: #f7f6f3;
+    --bg2: #ffffff;
+    --fg: #1a1a2e;
+    --fg2: #4a4a6a;
+    --accent: #2d6cdf;
+    --accent2: #e8f0ff;
+    --border: #e2e0dc;
+    --card-shadow: 0 2px 12px rgba(45,108,223,0.08);
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0f1117;
+      --bg2: #181b26;
+      --fg: #eeedf0;
+      --fg2: #9b99b0;
+      --accent: #5b8ef5;
+      --accent2: #1a2340;
+      --border: #252838;
+      --card-shadow: 0 2px 16px rgba(0,0,0,0.4);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0f1117;
+    --bg2: #181b26;
+    --fg: #eeedf0;
+    --fg2: #9b99b0;
+    --accent: #5b8ef5;
+    --accent2: #1a2340;
+    --border: #252838;
+    --card-shadow: 0 2px 16px rgba(0,0,0,0.4);
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--fg);
+    font-size: 16px;
+    line-height: 1.6;
+    padding-inline: 0;
+    padding-block: 0;
+  }
+  h1,h2,h3,h4 { font-family: 'Syne', sans-serif; text-wrap: balance; }
+
+  /* NAV */
+  nav {
+    position: sticky;
+    top: env(safe-area-inset-top, 0px);
+    z-index: 100;
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    padding: 0 clamp(16px, 5vw, 64px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 60px;
+    gap: 16px;
+  }
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.1rem;
+    color: var(--accent);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .nav-links {
+    display: flex;
+    gap: 24px;
+    list-style: none;
+  }
+  .nav-links a {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--fg2);
+    text-decoration: none;
+    letter-spacing: 0.03em;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+  .nav-cta {
+    background: var(--accent);
+    color: #fff !important;
+    padding: 8px 18px;
+    border-radius: 6px;
+    font-weight: 600 !important;
+    font-size: 0.82rem !important;
+    transition: opacity 0.2s !important;
+    white-space: nowrap;
+  }
+  .nav-cta:hover { opacity: 0.85 !important; }
+  @media (max-width: 640px) {
+    .nav-links { display: none; }
+  }
+
+  /* SECTIONS */
+  section { padding: clamp(48px,8vw,96px) clamp(16px,5vw,64px); }
+
+  /* HERO */
+  .hero {
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: center;
+    min-height: 480px;
+  }
+  @media (max-width: 700px) {
+    .hero { grid-template-columns: 1fr; min-height: auto; }
+    .hero-visual { display: none; }
+  }
+  .hero-eyebrow {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: var(--accent2);
+    padding: 4px 12px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 800;
+    line-height: 1.1;
+    color: var(--fg);
+    margin-bottom: 20px;
+  }
+  .hero h1 span { color: var(--accent); }
+  .hero-sub {
+    font-size: 1.05rem;
+    color: var(--fg2);
+    max-width: 480px;
+    margin-bottom: 32px;
+  }
+  .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--accent);
+    color: #fff;
+    padding: 12px 28px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+  .btn-primary:hover { opacity: 0.85; }
+  .btn-outline {
+    border: 1.5px solid var(--border);
+    color: var(--fg);
+    padding: 12px 28px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-decoration: none;
+    transition: border-color 0.2s;
+  }
+  .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+  .hero-visual {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .hero-graphic {
+    width: 100%;
+    max-width: 380px;
+    aspect-ratio: 4/3;
+    background: var(--accent2);
+    border-radius: 16px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    padding: 24px;
+  }
+  .hg-card {
+    background: var(--bg2);
+    border-radius: 10px;
+    padding: 16px;
+    border: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .hg-icon { font-size: 1.4rem; }
+  .hg-label { font-size: 0.72rem; color: var(--fg2); font-weight: 500; }
+  .hg-val { font-size: 1.3rem; font-weight: 700; font-family: 'Syne', sans-serif; color: var(--accent); font-variant-numeric: tabular-nums; }
+
+  /* STATS */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 0;
+  }
+  @media (max-width: 600px) { .stats-row { grid-template-columns: 1fr 1fr; } }
+  .stat-item {
+    background: var(--bg2);
+    padding: 28px 20px;
+    text-align: center;
+  }
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: var(--accent);
+    font-variant-numeric: tabular-nums;
+  }
+  .stat-label { font-size: 0.8rem; color: var(--fg2); margin-top: 4px; font-weight: 500; }
+
+  /* SECTION HEADERS */
+  .section-header { margin-bottom: 40px; }
+  .section-eyebrow {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 10px;
+  }
+  .section-title {
+    font-size: clamp(1.6rem, 3vw, 2.4rem);
+    font-weight: 800;
+    line-height: 1.15;
+  }
+  .section-sub {
+    margin-top: 12px;
+    color: var(--fg2);
+    max-width: 540px;
+    font-size: 1rem;
+  }
+
+  /* SERVICES */
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  @media (max-width: 800px) { .services-grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 500px) { .services-grid { grid-template-columns: 1fr; } }
+  .service-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px 24px;
+    transition: box-shadow 0.2s, border-color 0.2s;
+  }
+  .service-card:hover { box-shadow: var(--card-shadow); border-color: var(--accent); }
+  .service-icon { font-size: 1.8rem; margin-bottom: 14px; }
+  .service-title { font-size: 1rem; font-weight: 700; margin-bottom: 8px; }
+  .service-desc { font-size: 0.88rem; color: var(--fg2); line-height: 1.6; }
+
+  /* PORTFOLIO */
+  .portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  @media (max-width: 800px) { .portfolio-grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 500px) { .portfolio-grid { grid-template-columns: 1fr; } }
+  .portfolio-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: box-shadow 0.2s;
+  }
+  .portfolio-card:hover { box-shadow: var(--card-shadow); }
+  .portfolio-thumb {
+    aspect-ratio: 16/9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.4rem;
+  }
+  .portfolio-body { padding: 18px 20px; }
+  .portfolio-tag {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: var(--accent2);
+    padding: 3px 8px;
+    border-radius: 4px;
+    display: inline-block;
+    margin-bottom: 8px;
+  }
+  .portfolio-name { font-size: 0.95rem; font-weight: 700; margin-bottom: 6px; }
+  .portfolio-desc { font-size: 0.82rem; color: var(--fg2); }
+
+  /* ABOUT */
+  .about-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+  }
+  @media (max-width: 700px) { .about-inner { grid-template-columns: 1fr; gap: 32px; } }
+  .about-text p { color: var(--fg2); margin-bottom: 16px; font-size: 0.97rem; }
+  .about-highlights {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .highlight-item {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 18px;
+  }
+  .hi-icon { font-size: 1.3rem; flex-shrink: 0; }
+  .hi-title { font-size: 0.9rem; font-weight: 700; margin-bottom: 4px; }
+  .hi-desc { font-size: 0.82rem; color: var(--fg2); }
+
+  /* CONTACT */
+  .contact-section { background: var(--accent); }
+  .contact-section .section-eyebrow { color: rgba(255,255,255,0.7); }
+  .contact-section .section-title { color: #fff; }
+  .contact-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: start;
+  }
+  @media (max-width: 700px) { .contact-inner { grid-template-columns: 1fr; gap: 32px; } }
+  .contact-desc { color: rgba(255,255,255,0.85); font-size: 1rem; margin-top: 14px; margin-bottom: 28px; }
+  .contact-items { display: flex; flex-direction: column; gap: 12px; }
+  .contact-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: rgba(255,255,255,0.9);
+    font-size: 0.92rem;
+  }
+  .contact-item-icon {
+    width: 36px; height: 36px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+  .contact-form-card {
+    background: var(--bg2);
+    border-radius: 14px;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 500px) { .form-row { grid-template-columns: 1fr; } }
+  .form-group { display: flex; flex-direction: column; gap: 6px; }
+  .form-group label { font-size: 0.8rem; font-weight: 600; color: var(--fg2); }
+  .form-group input, .form-group textarea, .form-group select {
+    background: var(--bg);
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 0.9rem;
+    color: var(--fg);
+    font-family: 'Inter', sans-serif;
+    transition: border-color 0.2s;
+    outline: none;
+    resize: none;
+  }
+  .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+    border-color: var(--accent);
+  }
+  .form-submit {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 13px 28px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+  .form-submit:hover { opacity: 0.85; }
+  .form-success {
+    background: #d1fae5;
+    color: #065f46;
+    border-radius: 8px;
+    padding: 14px 18px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    display: none;
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--fg);
+    color: rgba(255,255,255,0.7);
+    padding: clamp(32px,5vw,48px) clamp(16px,5vw,64px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    font-size: 0.85rem;
+  }
+  .footer-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    color: #fff;
+    font-size: 1rem;
+  }
+
+  /* DIVIDER */
+  .divider { border: none; border-top: 1px solid var(--border); margin: 0; }
+</style>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#" style="display:flex;align-items:center;gap:10px;text-decoration:none;">
+    <svg width="38" height="32" viewBox="0 0 48 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- top diamond -->
+      <polygon points="24,0 34,10 24,20 14,10" fill="#1a3a8f"/>
+      <!-- left diamond -->
+      <polygon points="10,14 20,24 10,34 0,24" fill="#1e5bbf"/>
+      <!-- right diamond -->
+      <polygon points="38,14 48,24 38,34 28,24" fill="#1e5bbf"/>
+      <!-- bottom diamond -->
+      <polygon points="24,20 34,30 24,40 14,30" fill="#2d6cdf"/>
+    </svg>
+    <span style="display:flex;flex-direction:column;line-height:1.1;">
+      <span style="font-family:'Syne',sans-serif;font-weight:800;font-size:1rem;color:var(--fg);letter-spacing:0.05em;">DAVID</span>
+      <span style="font-family:'Inter',sans-serif;font-weight:500;font-size:0.6rem;color:var(--fg2);letter-spacing:0.12em;text-transform:uppercase;">WEB SOLUTION</span>
+    </span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#portfolio">Portfolio</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#contact" class="nav-cta">Get a Quote</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div>
+    <span class="hero-eyebrow">Web Development Agency · Since 2019</span>
+    <h1>Websites That <span>Win</span> Business for Startups</h1>
+    <p class="hero-sub">We design and build high-performance websites, e-commerce stores, and web apps for startups and small businesses across the US and UK.</p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn-primary">Get a Free Quote</a>
+      <a href="#portfolio" class="btn-outline">See Our Work</a>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="hero-graphic">
+      <div class="hg-card">
+        <div class="hg-icon">🚀</div>
+        <div class="hg-label">Projects Done</div>
+        <div class="hg-val">500+</div>
+      </div>
+      <div class="hg-card">
+        <div class="hg-icon">⭐</div>
+        <div class="hg-label">Happy Clients</div>
+        <div class="hg-val">400+</div>
+      </div>
+      <div class="hg-card">
+        <div class="hg-icon">🏆</div>
+        <div class="hg-label">Awards Won</div>
+        <div class="hg-val">50</div>
+      </div>
+      <div class="hg-card">
+        <div class="hg-icon">📅</div>
+        <div class="hg-label">Years Active</div>
+        <div class="hg-val">6+</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="section-header">
+    <div class="section-eyebrow">What We Do</div>
+    <h2 class="section-title">Full-Stack Digital Services</h2>
+    <p class="section-sub">From a simple landing page to a full e-commerce platform — we build it, optimize it, and grow it.</p>
+  </div>
+  <div class="services-grid">
+    <div class="service-card">
+      <div class="service-icon">🎨</div>
+      <div class="service-title">Website Design</div>
+      <div class="service-desc">Custom, conversion-focused designs that represent your brand and turn visitors into customers.</div>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">💻</div>
+      <div class="service-title">Web Development</div>
+      <div class="service-desc">Fast, secure, and scalable websites built with modern technologies and clean code.</div>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">🛒</div>
+      <div class="service-title">E-Commerce Stores</div>
+      <div class="service-desc">Shopify, WooCommerce and custom stores designed to maximize sales and user experience.</div>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">📱</div>
+      <div class="service-title">Mobile App Development</div>
+      <div class="service-desc">Cross-platform mobile apps that work seamlessly on iOS and Android for your business.</div>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">📈</div>
+      <div class="service-title">Digital Marketing</div>
+      <div class="service-desc">SEO, social media, and content strategies that drive real, measurable traffic to your site.</div>
+    </div>
+    <div class="service-card">
+      <div class="service-icon">🔍</div>
+      <div class="service-title">SEO Optimization</div>
+      <div class="service-desc">On-page and technical SEO that helps your business rank higher on Google and get found.</div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- STATS -->
+<section style="padding-block: 40px">
+  <div class="stats-row">
+    <div class="stat-item">
+      <div class="stat-num">500+</div>
+      <div class="stat-label">Projects Completed</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">400+</div>
+      <div class="stat-label">Satisfied Clients</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">50</div>
+      <div class="stat-label">Awards Won</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">6+</div>
+      <div class="stat-label">Years of Experience</div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- PORTFOLIO -->
+<section id="portfolio">
+  <div class="section-header">
+    <div class="section-eyebrow">Our Work</div>
+    <h2 class="section-title">Recent Projects</h2>
+    <p class="section-sub">A selection of websites and digital solutions we've delivered for our clients.</p>
+  </div>
+  <div class="portfolio-grid">
+    <div class="portfolio-card">
+      <div class="portfolio-thumb" style="background:#e8f0ff;">📚</div>
+      <div class="portfolio-body">
+        <span class="portfolio-tag">E-Commerce</span>
+        <div class="portfolio-name">Takshshila Books</div>
+        <div class="portfolio-desc">Online bookstore with catalog management, search, and secure checkout.</div>
+      </div>
+    </div>
+    <div class="portfolio-card">
+      <div class="portfolio-thumb" style="background:#fef3c7;">🐾</div>
+      <div class="portfolio-body">
+        <span class="portfolio-tag">Service Website</span>
+        <div class="portfolio-name">Pets Care</div>
+        <div class="portfolio-desc">Appointment booking and service listing site for a pet care clinic.</div>
+      </div>
+    </div>
+    <div class="portfolio-card">
+      <div class="portfolio-thumb" style="background:#ede9fe;">🏢</div>
+      <div class="portfolio-body">
+        <span class="portfolio-tag">Corporate</span>
+        <div class="portfolio-name">Consulting Services</div>
+        <div class="portfolio-desc">Lead-generation focused corporate website for a business consulting firm.</div>
+      </div>
+    </div>
+    <div class="portfolio-card">
+      <div class="portfolio-thumb" style="background:#dcfce7;">🏠</div>
+      <div class="portfolio-body">
+        <span class="portfolio-tag">Real Estate</span>
+        <div class="portfolio-name">Property Management</div>
+        <div class="portfolio-desc">Property listing platform with search filters and inquiry management system.</div>
+      </div>
+    </div>
+    <div class="portfolio-card">
+      <div class="portfolio-thumb" style="background:#fee2e2;">💪</div>
+      <div class="portfolio-body">
+        <span class="portfolio-tag">Health & Fitness</span>
+        <div class="portfolio-name">Gym Portal</div>
+        <div class="portfolio-desc">Membership and class booking portal for a fitness center.</div>
+      </div>
+    </div>
+    <div class="portfolio-card">
+      <div class="portfolio-thumb" style="background:#fce7f3;">🙏</div>
+      <div class="portfolio-body">
+        <span class="portfolio-tag">Non-Profit</span>
+        <div class="portfolio-name">Bhairo Mandir Trust</div>
+        <div class="portfolio-desc">Donation and event management site for a charitable religious trust.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ABOUT -->
+<section id="about" style="background: var(--bg2);">
+  <div class="about-inner">
+    <div class="about-text">
+      <div class="section-eyebrow">Who We Are</div>
+      <h2 class="section-title" style="margin-bottom: 20px;">Built on Results, Driven by Craft</h2>
+      <p>David Web Solution has been on the journey of web development and digital marketing since 2019. We've served hundreds of clients who derived full satisfaction with our work.</p>
+      <p>Our team is a blend of enthusiastic designers, keen developers, and business-minded strategists — all committed to delivering work that is used, loved, and admired.</p>
+      <p>We provide optimum web solutions tailored to your business, because every business is different and deserves a solution built specifically for it.</p>
+    </div>
+    <div class="about-highlights">
+      <div class="highlight-item">
+        <div class="hi-icon">⚡</div>
+        <div>
+          <div class="hi-title">Fast Turnaround</div>
+          <div class="hi-desc">We deliver on time. Most projects completed within 2–4 weeks.</div>
+        </div>
+      </div>
+      <div class="highlight-item">
+        <div class="hi-icon">🔒</div>
+        <div>
+          <div class="hi-title">Secure & Scalable Code</div>
+          <div class="hi-desc">Clean, maintainable code built to last and grow with your business.</div>
+        </div>
+      </div>
+      <div class="highlight-item">
+        <div class="hi-icon">💬</div>
+        <div>
+          <div class="hi-title">Direct Communication</div>
+          <div class="hi-desc">You work directly with our team — no middlemen, no delays.</div>
+        </div>
+      </div>
+      <div class="highlight-item">
+        <div class="hi-icon">🌍</div>
+        <div>
+          <div class="hi-title">US & UK Clients Welcome</div>
+          <div class="hi-desc">We work across time zones and communicate in clear, professional English.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact-section" id="contact">
+  <div class="contact-inner">
+    <div>
+      <div class="section-eyebrow">Let's Talk</div>
+      <h2 class="section-title">Ready to Start Your Project?</h2>
+      <p class="contact-desc">Tell us about your business and what you need. We'll get back to you within 24 hours with a custom plan and quote.</p>
+      <div class="contact-items">
+        <div class="contact-item">
+          <div class="contact-item-icon">✉️</div>
+          <span>aravdedha01@gmail.com</span>
+        </div>
+        <div class="contact-item">
+          <div class="contact-item-icon">📞</div>
+          <span>+91 82854 23939</span>
+        </div>
+        <div class="contact-item">
+          <div class="contact-item-icon">🕐</div>
+          <span>Response within 24 hours · Mon–Sat</span>
+        </div>
+      </div>
+    </div>
+    <div class="contact-form-card">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="cf-name">Your Name</label>
+          <input type="text" id="cf-name" placeholder="Jane Smith">
+        </div>
+        <div class="form-group">
+          <label for="cf-email">Email Address</label>
+          <input type="email" id="cf-email" placeholder="jane@company.com">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="cf-service">Service Needed</label>
+        <select id="cf-service">
+          <option value="">Select a service…</option>
+          <option>Website Design</option>
+          <option>Web Development</option>
+          <option>E-Commerce Store</option>
+          <option>Mobile App</option>
+          <option>Digital Marketing / SEO</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="cf-msg">Tell Us About Your Project</label>
+        <textarea id="cf-msg" rows="4" placeholder="Brief description of what you need…"></textarea>
+      </div>
+      <button class="form-submit" id="form-btn">Send Message</button>
+      <div class="form-success" id="form-success">✅ Message received! We'll get back to you within 24 hours.</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-logo" style="display:flex;align-items:center;gap:10px;">
+    <svg width="30" height="25" viewBox="0 0 48 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="24,0 34,10 24,20 14,10" fill="#1a3a8f"/>
+      <polygon points="10,14 20,24 10,34 0,24" fill="#4a7fd4"/>
+      <polygon points="38,14 48,24 38,34 28,24" fill="#4a7fd4"/>
+      <polygon points="24,20 34,30 24,40 14,30" fill="#5b8ef5"/>
+    </svg>
+    <span style="display:flex;flex-direction:column;line-height:1.1;">
+      <span style="font-family:'Syne',sans-serif;font-weight:800;font-size:0.95rem;color:#fff;letter-spacing:0.05em;">DAVID</span>
+      <span style="font-family:'Inter',sans-serif;font-weight:500;font-size:0.58rem;color:rgba(255,255,255,0.6);letter-spacing:0.12em;text-transform:uppercase;">WEB SOLUTION</span>
+    </span>
+  </span>
+  <span>© 2024 David Web Solution · All rights reserved</span>
+</footer>
+
+<script>
+  document.getElementById('form-btn').addEventListener('click', function() {
+    const name = document.getElementById('cf-name').value.trim();
+    const email = document.getElementById('cf-email').value.trim();
+    const msg = document.getElementById('cf-msg').value.trim();
+    if (!name || !email || !msg) {
+      alert('Please fill in your name, email, and message.');
+      return;
+    }
+    this.textContent = 'Sent!';
+    this.disabled = true;
+    document.getElementById('form-success').style.display = 'block';
+  });
+</script>
